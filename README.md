@@ -1,71 +1,74 @@
 # Indian Passwords Wordlist
 
-A curated collection of password wordlists tailored for **India-specific brute-force and dictionary attack engagements** during authorized penetration tests, red team assessments, and CTF challenges. Unlike generic lists (RockYou, SecLists), this repo focuses on password patterns common among Indian users — names, DOB formats, and mobile-number-based passwords.
+A collection of password lists made for password-guessing during **authorized** security testing (like CTFs, HTB/THM labs, or pentests you have permission for).
 
-## Why This Exists
+These lists are focused on password patterns common in India — names, dates of birth, and mobile numbers — instead of generic lists like RockYou.
 
-Generic wordlists give broad coverage but low hit-rate against regionally-influenced password habits. This project narrows the search space by generating and curating lists based on:
-
-- Common Indian names, festivals, and cultural terms
-- Date-of-birth patterns (a widely reused password base in India)
-- Mobile number based passwords (10-digit patterns are frequently reused as-is or with minor suffixes)
-- Filtered/extracted entries from RockYou relevant to Indian usage
-
-Smaller, targeted wordlists = faster cracking and lower noise during time-boxed engagements (OSCP-style labs, CTFs, or client pentests with rate-limiting/lockout policies).
-
-## Repository Structure
+## What's Inside
 
 ```
 indian-passwords-wordlist/
-├── 1. Build on prebuild lists/          # Lists derived/refined from existing public wordlists
-├── 2. extracted from rock you/          # Subset of RockYou filtered for Indian-relevant entries
-├── 3. passwords based on DOB From 1950 to 2050/   # DOB-pattern generated passwords (DDMMYYYY, MMDDYY, etc.)
-├── 4. Passwords list based on mobile numbers/      # Mobile-number-derived password patterns
+├── 1. Build on prebuild lists/          → lists built from other public wordlists
+├── 2. extracted from rock you/          → passwords picked out from RockYou
+├── 3. passwords based on DOB From 1950 to 2050/   → passwords made from birth dates
+├── 4. Passwords list based on mobile numbers/     → passwords made from phone numbers
 └── README.md
 ```
 
-> Note: generator scripts are Python. If a folder contains both `.py` generators and `.txt` output lists, the script builds the corresponding list programmatically (useful for regenerating with a custom range/seed rather than storing huge static files).
+Each folder is just `.txt` files with passwords, one per line. Some folders may also have a Python script used to generate the list.
 
-## Usage
+## How to Download It
 
-### With Hydra (online brute force)
+**Option 1: Download as ZIP (easiest, no tools needed)**
+1. Go to the repo page on GitHub
+2. Click the green **Code** button
+3. Click **Download ZIP**
+4. Unzip it on your computer
+
+**Option 2: Clone with Git**
 ```bash
-hydra -l admin -P "3. passwords based on DOB From 1950 to 2050/dob_list.txt" ssh://<target>
+git clone https://github.com/arsh-hash/indian-passwords-wordlist.git
+cd indian-passwords-wordlist
 ```
 
-### With John the Ripper / Hashcat (offline cracking)
+## How to Use the Lists
+
+You just point your tool at one of the `.txt` files. Here are some common examples:
+
+**Hashcat (cracking password hashes)**
 ```bash
-hashcat -m 0 hashes.txt "2. extracted from rock you/indian_rockyou.txt"
-john --wordlist="4. Passwords list based on mobile numbers/mobile_passwords.txt" hashes.txt
+hashcat -m 0 hashes.txt "2. extracted from rock you/rockyou_indian.txt"
 ```
 
-### With Burp Suite Intruder
-Load the relevant `.txt` file as a payload set for credential-stuffing / login brute-force tests on web app assessments.
-
-### Regenerating a list (if a Python generator is included)
+**John the Ripper**
 ```bash
-python3 gen_dob_list.py --start 1950 --end 2050 --format DDMMYYYY -o dob_list.txt
+john --wordlist="3. passwords based on DOB From 1950 to 2050/dob_list.txt" hashes.txt
 ```
-(Adjust script name/args to match the actual file in that folder.)
 
-## Recommended Workflow
+**Hydra (guessing login passwords online)**
+```bash
+hydra -l admin -P "4. Passwords list based on mobile numbers/mobile_list.txt" ssh://target-ip
+```
 
-1. Start with the smallest, most targeted list (DOB or mobile-based) before falling back to the full RockYou-derived set — reduces lockout risk on accounts with attempt limits.
-2. Combine with tools like `cewl` or OSINT-gathered names/DOBs from the target to build a custom mutated list (`hashcat` rules or `mentalist`) for even higher hit rates.
-3. Always throttle requests (`hydra -t`, Burp Intruder resource pool) to avoid tripping WAF/IDS during authorized tests.
+**Burp Suite**
+Load any `.txt` file as a payload list under Intruder.
 
-## Legal / Ethical Use Disclaimer
+*(File names above are examples — check the folder to see the real file name.)*
 
-This wordlist is intended **strictly for authorized security testing** — penetration tests with signed scope/ROE, bug bounty programs, CTFs, and personal lab environments (HTB, THM, etc.).
+## Want One Big List Instead?
 
-- Do **not** use this against any system you do not own or have explicit written authorization to test.
-- Unauthorized access attempts are illegal under laws such as India's IT Act, 2000 (Section 66) and equivalent legislation elsewhere.
-- The author(s) assume no liability for misuse.
+If you'd rather have everything in a single file:
+```bash
+cat */*.txt | sort -u > all_passwords.txt
+```
+This combines all the lists into one file called `all_passwords.txt`, with duplicates removed.
 
-## Contributing
+## Important: Use It the Right Way
 
-PRs adding new pattern categories (e.g., vehicle registration numbers, PIN codes, common Hindi/regional transliterated words) are welcome. Please keep lists deduplicated and sorted, and note the generation methodology in the folder.
+- Only use this on systems you **own** or have **written permission** to test.
+- Using this against someone else's account or system without permission is illegal.
+- This is meant for learning, CTFs, and authorized security testing only.
 
-## License
+## Want to Contribute?
 
-Specify a license here (e.g., MIT) if you intend this for public/OSS use — currently unspecified in the repo.
+Feel free to add new password patterns (like PIN codes or common Indian words). Just keep the list clean (no duplicates) and add it to the right folder.
