@@ -1,6 +1,6 @@
 # Indian Passwords Wordlist
 
-A collection of password lists made for password-guessing during **authorized** security testing (like CTFs, HTB/THM labs, or pentests you have permission for).
+A collection of password lists made for password-guessing during **authorized** security testing (like CTFs, HTB/THM labs ).
 
 These lists are focused on password patterns common in India — names, dates of birth, and mobile numbers — instead of generic lists like RockYou.
 
@@ -9,9 +9,9 @@ These lists are focused on password patterns common in India — names, dates of
 ```
 indian-passwords-wordlist/
 ├── 1. Build on prebuild lists/          → lists built from other public wordlists
-├── 2. extracted from rock you/          → passwords picked out from RockYou
+├── 2. extracted from rock you/          → passwords picked out from RockYou which are common across people besides their country 
 ├── 3. passwords based on DOB From 1950 to 2050/   → passwords made from birth dates
-├── 4. Passwords list based on mobile numbers/     → passwords made from phone numbers
+├── 4. Passwords list based on mobile numbers/     → passwords made from indian phone numbers
 └── README.md
 ```
 
@@ -19,13 +19,7 @@ Each folder is just `.txt` files with passwords, one per line. Some folders may 
 
 ## How to Download It
 
-**Option 1: Download as ZIP (easiest, no tools needed)**
-1. Go to the repo page on GitHub
-2. Click the green **Code** button
-3. Click **Download ZIP**
-4. Unzip it on your computer
-
-**Option 2: Clone with Git**
+**Clone with Git**
 ```bash
 git clone https://github.com/arsh-hash/indian-passwords-wordlist.git
 cd indian-passwords-wordlist
@@ -55,13 +49,6 @@ Load any `.txt` file as a payload list under Intruder.
 
 *(File names above are examples — check the folder to see the real file name.)*
 
-## Want One Big List Instead?
-
-If you'd rather have everything in a single file:
-```bash
-cat */*.txt | sort -u > all_passwords.txt
-```
-This combines all the lists into one file called `all_passwords.txt`, with duplicates removed.
 
 ## Important: Use It the Right Way
 
